@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seu primeiro site, passo a passo</title>
+<style>
+:root{--bg:#fbf7f0;--fg:#2b2118;--muted:#6b5b4b;--ac:#a8501c;--ac2:#c46a1a;--acfg:#fff;--card:#fff;--line:#e4d8c8;--soft:#f5e8d6;--code:#2b2118;--codefg:#f6e9d6;--hl:#f0b070;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17120d;--fg:#f3e9dc;--muted:#b9a78f;--ac:#e58a4d;--ac2:#f0b070;--acfg:#17120d;--card:#221b14;--line:#3a2f23;--soft:#2a2118;--code:#0e0b08;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17120d;--fg:#f3e9dc;--muted:#b9a78f;--ac:#e58a4d;--ac2:#f0b070;--acfg:#17120d;--card:#221b14;--line:#3a2f23;--soft:#2a2118;--code:#0e0b08;color-scheme:dark}
+html{scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:1rem/1.7 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.2;margin:0}
+a{color:var(--ac)}
+.wrap{max-width:none;margin:0;padding:0 clamp(1.2rem,5vw,4rem)}
+.hero{background:linear-gradient(135deg,var(--ac),var(--ac2));color:var(--acfg);padding:3.2rem 0 3rem}
+.hero small{letter-spacing:.1em;text-transform:uppercase;font-weight:700;font-size:.78rem;opacity:.9}
+.hero h1{font-size:clamp(2rem,7vw,3.4rem);margin:.5rem 0 1rem}
+.hero p{max-width:50rem;font-size:1.08rem;margin:0 0 1.4rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+.chips span{background:rgba(255,255,255,.2);border-radius:99px;padding:.25rem .8rem;font-size:.85rem}
+.btn{display:inline-block;background:var(--acfg);color:var(--ac);font-weight:700;text-decoration:none;padding:.7rem 1.3rem;border-radius:10px}
+.sec{padding:2.6rem 0 0}
+.sec>h2{font-size:clamp(1.5rem,4.5vw,2rem);margin-bottom:.6rem}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:1rem 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem}
+.card h3{font-size:1.15rem;margin-bottom:.3rem}
+.callout{background:var(--soft);border-left:4px solid var(--ac);border-radius:8px;padding:.75rem 1rem;margin:1rem 0;font-size:.95rem}
+.step{display:grid;grid-template-columns:auto 1fr;gap:1rem;margin-top:2.2rem;position:relative}
+.num{width:2.6rem;height:2.6rem;border-radius:50%;background:var(--ac);color:var(--acfg);display:grid;place-items:center;font-weight:800;font-family:Georgia,serif;font-size:1.2rem}
+.step::before{content:"";position:absolute;left:1.3rem;top:2.8rem;bottom:-2rem;width:2px;background:var(--line)}
+.step:last-of-type::before{display:none}
+.body{min-width:0}
+.body h3{font-size:1.35rem;margin:.2rem 0 .4rem}
+.file{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:6px 6px 0 0;padding:.1rem .7rem;font-size:.78rem;font-family:ui-monospace,Consolas,monospace;margin-top:.6rem;color:var(--muted)}
+pre{background:var(--code);color:var(--codefg);padding:1rem;border-radius:0 10px 10px 10px;overflow-x:auto;font-size:.88rem;line-height:1.55;margin:0 0 .8rem}
+code{font-family:ui-monospace,Consolas,monospace}
+.lines{list-style:none;padding:0;margin:.4rem 0}
+.lines li{display:grid;grid-template-columns:minmax(0,clamp(13rem,30%,24rem)) 1fr;gap:.2rem .8rem;padding:.45rem 0;border-top:1px dashed var(--line);font-size:.93rem}
+.lines code,p code,li code{background:var(--soft);border-radius:4px;padding:0 .35em;font-size:.86em;overflow-wrap:anywhere}
+.tagdemo{font-family:ui-monospace,Consolas,monospace;font-size:clamp(.95rem,4vw,1.3rem);text-align:center;padding:1.2rem .6rem;background:var(--code);color:var(--codefg);border-radius:12px;margin:1rem 0 .4rem;overflow-x:auto;white-space:nowrap}
+.tagdemo b{color:var(--hl)}
+.tagcap{display:flex;justify-content:space-around;text-align:center;font-size:.8rem;color:var(--muted);gap:.4rem}
+.site{border:1px solid var(--line);border-radius:12px;overflow:hidden;max-width:460px;margin:.8rem 0;color:#fff;background:linear-gradient(135deg,#000022,#0000aa);font-family:Arial,sans-serif;font-size:.8rem}
+.site i{display:block;background:rgba(255,255,255,.12);padding:.3rem .7rem;font-style:normal;font-size:.72rem}
+.site div{padding:.8rem 1rem}
+.site .lg{width:64px;height:64px;border-radius:50%;background:#f9cc17;border:3px solid #ff9d2e;margin:.4rem auto}
+.site h4{margin:.5rem 0 0;color:#ff9d2e;font-size:.95rem}
+.map{display:flex;gap:1rem;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:.7rem .9rem;margin:.6rem 0 .9rem}.map p{margin:0;font-size:.9rem}.mm{flex:none;width:140px;display:flex;flex-direction:column;gap:3px;padding:6px;border-radius:8px;background:#0b0b2a;border:2px solid transparent}.mm span{display:block;font:.5rem/1.2 system-ui,sans-serif;color:#fff;text-align:center;padding:2px;border:1px dashed rgba(255,255,255,.35);border-radius:3px;opacity:.35}.mm .l{width:26px;height:26px;border-radius:50%;margin:0 auto;padding:0}.mm .n{text-align:left}.mm .m{padding:9px 2px}.mm .on{opacity:1;border:1.5px solid #ff9d2e;background:rgba(255,157,46,.4)}.mm.bg{border-color:#ff9d2e;background:linear-gradient(135deg,#000022,#0000aa)}@media (max-width:420px){.map{flex-direction:column;align-items:flex-start}}
+#p10 .body{display:contents}#p10 .body>:not(h3){grid-column:1/-1}#p10 .body h3{align-self:center;margin:0}#p10 ol{padding-left:1.4rem;margin:.4rem 0}
+.cta{text-align:center;padding:3rem 0 3rem}.cta a{display:inline-block;background:var(--ac);color:var(--acfg);font-weight:700;font-size:1.15rem;text-decoration:none;padding:.95rem 2.2rem;border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,.15)}.cta a:hover,.cta a:focus{background:var(--ac2)}
+@media (max-width:560px){.lines li{grid-template-columns:1fr}.step{gap:.7rem}}
+</style>
+</head>
+<body>
+
+<header class="hero"><div class="wrap">
+<small>HTML + CSS na prática</small>
+<h1>Seu primeiro site, do zero, passo a passo</h1>
+<p>Você vai montar um modelo base de página (menu, logo redondo, títulos, textos e rodapé) para personalizar com o seu conteúdo e colocar no ar de graça. Cada pedaço de código é pequeno e vem explicado linha por linha. Não precisa saber nada antes.</p>
+<div class="chips"><span>10 passos</span><span>Sem instalar nada difícil</span><span>Funciona no celular</span></div>
+<a class="btn" href="#antes">Começar</a>
+</div></header>
+
+<main class="wrap">
+
+<section class="sec" id="antes">
+<h2>Antes de tudo: o que são HTML e CSS?</h2>
+<p>Um site tem duas partes. Pense em uma casa:</p>
+<div class="grid">
+<div class="card"><h3>🧱 HTML</h3><p>É a estrutura: o que existe na página (títulos, textos, fotos, links). Como as paredes e os cômodos.</p></div>
+<div class="card"><h3>🎨 CSS</h3><p>É a aparência: cores, tamanhos, posição. Como a pintura e a decoração.</p></div>
+</div>
+<p>O HTML é feito de <strong>tags</strong>. Quase toda tag abre e fecha, e o conteúdo fica no meio:</p>
+<div class="tagdemo" aria-label="Exemplo de tag">&lt;p&gt;<b>Olá, mundo!</b>&lt;/p&gt;</div>
+<div class="tagcap"><span>abre a tag</span><span>conteúdo</span><span>fecha a tag (tem uma barra /)</span></div>
+<p>No fim dos 10 passos, seu site terá este formato:</p>
+<div class="site" aria-label="Prévia do site que você vai criar"><i>meu-site / index.html</i><div>
+<span>Início</span>
+<div style="text-align:center;padding:.3rem"><strong style="font-size:1rem">Título do Site</strong><div class="lg" style="padding:0"></div></div>
+<h4>Subtítulo do Site</h4><strong>Sobre mim</strong><br><small>Texto de apresentação…</small>
+<p style="text-align:center;margin:.8rem 0 0;font-size:.7rem">Email · Telefone · © 2026 Seu Nome</p>
+</div></div>
+<div class="callout"><strong>O que você precisa:</strong> um computador, o <em>Bloco de Notas</em> (ou o Visual Studio Code, que é melhor), um navegador e uma conta gratuita no GitHub.</div>
+</section>
+
+<section class="sec"><h2>Mãos à obra</h2>
+
+<div class="step" id="p1"><div class="num">1</div><div class="body">
+<h3>Crie a pasta e organize os arquivos</h3>
+<div class="map"><div class="mm" aria-hidden="true"><span class="n">Menu</span><span class="t">Título</span><span class="l"></span><span class="h">Subtítulo</span><span class="m">Conteúdo</span><span class="f">Rodapé</span></div><p><strong>Você está aqui:</strong> ainda não aparece nada na tela. Estamos só preparando a pasta e os arquivos.</p></div>
+<p>Crie uma pasta chamada <code>meu-site</code>. Dentro dela, crie outra pasta chamada <code>img</code> e coloque lá duas imagens: o logo, com o nome <code>logo.png</code>, e uma foto para o fundo, com o nome <code>fundo.jpg</code>.</p>
+<span class="file">meu-site/</span>
+<pre><code>meu-site/
+├── img/
+│   ├── logo.png     (o logo, de preferência quadrado)
+│   └── fundo.jpg    (a foto de fundo)
+├── index.html       (vamos criar)
+└── index.css        (vamos criar)</code></pre>
+<p>Crie dois arquivos de texto vazios e salve como <code>index.html</code> e <code>index.css</code>. O nome <code>index</code> é especial: é a página inicial do site. A pasta <code>img</code> mantém as imagens organizadas.</p>
+</div></div>
+
+<div class="step" id="p2"><div class="num">2</div><div class="body">
+<h3>Escreva o esqueleto da página</h3>
+<div class="map"><div class="mm" aria-hidden="true"><span class="n">Menu</span><span class="t">Título</span><span class="l"></span><span class="h">Subtítulo</span><span class="m">Conteúdo</span><span class="f">Rodapé</span></div><p><strong>Você está aqui:</strong> na página inteira, ainda em branco. Só existe o esqueleto do HTML.</p></div>
+<p>Toda página HTML começa assim. Copie e salve no <code>index.html</code>:</p>
+<span class="file">index.html</span>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Meu Site&lt;/title&gt;
+    &lt;link rel="stylesheet" href="./index.css"&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<ul class="lines">
+<li><code>&lt;!DOCTYPE html&gt;</code><span>Avisa o navegador: “isto é uma página HTML moderna”.</span></li>
+<li><code>&lt;html lang="pt-BR"&gt;</code><span>Envolve a página toda e diz que o idioma é português do Brasil.</span></li>
+<li><code>&lt;head&gt;</code><span>A “cabeça”: informações que não aparecem na tela.</span></li>
+<li><code>charset="UTF-8"</code><span>Faz acentos e ç aparecerem certinho.</span></li>
+<li><code>name="viewport"</code><span>Faz o site se ajustar à tela do celular. Não esqueça!</span></li>
+<li><code>&lt;title&gt;</code><span>O nome que aparece na aba do navegador.</span></li>
+<li><code>&lt;link ... href="./index.css"&gt;</code><span>Liga o arquivo de estilo ao HTML. O <code>./</code> significa “nesta mesma pasta”.</span></li>
+<li><code>&lt;body&gt;</code><span>O “corpo”: tudo o que você escrever aqui aparece na tela.</span></li>
+</ul>
+<div class="callout"><strong>Teste:</strong> dê dois cliques no arquivo. Ele abre no navegador. A página está em branco, e isso é o esperado.</div>
+</div></div>
+
+<div class="step" id="p3"><div class="num">3</div><div class="body">
+<h3>Crie a caixa da página e o menu</h3>
+<div class="map"><div class="mm" aria-hidden="true"><span class="n on">Menu</span><span class="t">Título</span><span class="l"></span><span class="h">Subtítulo</span><span class="m">Conteúdo</span><span class="f">Rodapé</span></div><p><strong>Você está aqui:</strong> no <strong>menu</strong>, o link “Início” no topo da página.</p></div>
+<p>Dentro do <code>&lt;body&gt;</code>, escreva:</p>
+<span class="file">index.html</span>
+<pre><code>&lt;div class="box"&gt;
+
+    &lt;nav&gt;
+        &lt;ul&gt;
+            &lt;li&gt;
+                &lt;a href="index.html"&gt;Início&lt;/a&gt;
+            &lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/nav&gt;
+
+&lt;/div&gt;</code></pre>
+<ul class="lines">
+<li><code>&lt;div class="box"&gt;</code><span>Uma caixa sem significado próprio, usada para agrupar coisas. O <code>class="box"</code> é um “apelido” que o CSS usará depois para dar espaço nas laterais. Ela vai envolver a página inteira.</span></li>
+<li><code>&lt;nav&gt;</code><span>De <em>navigation</em>: a área do menu.</span></li>
+<li><code>&lt;ul&gt; e &lt;li&gt;</code><span>Uma lista sem numeração e cada item dela. É assim que se monta um menu.</span></li>
+<li><code>&lt;a href="index.html"&gt;</code><span>Cria um link. O <code>href</code> é o destino (aqui, a própria página inicial).</span></li>
+</ul>
+<div class="callout">Nos próximos passos, escreva o novo código <strong>dentro</strong> da <code>div</code>, antes do <code>&lt;/div&gt;</code> final. Se criar mais páginas um dia, é só adicionar mais itens <code>&lt;li&gt;</code> ao menu.</div>
+</div></div>
+
+<div class="step" id="p4"><div class="num">4</div><div class="body">
+<h3>Monte o cabeçalho: título, logo e subtítulo</h3>
+<div class="map"><div class="mm" aria-hidden="true"><span class="n">Menu</span><span class="t on">Título</span><span class="l on"></span><span class="h on">Subtítulo</span><span class="m">Conteúdo</span><span class="f">Rodapé</span></div><p><strong>Você está aqui:</strong> no <strong>cabeçalho</strong>: o título, o logo redondo e o subtítulo.</p></div>
+<p>Logo depois do <code>&lt;/nav&gt;</code>, escreva:</p>
+<span class="file">index.html</span>
+<pre><code>&lt;header&gt;
+    &lt;h1&gt;Título do Site&lt;/h1&gt;
+
+    &lt;div class="center"&gt;
+        &lt;img src="./img/logo.png" alt="Meu logo"&gt;
+    &lt;/div&gt;
+
+    &lt;h2&gt;Subtítulo do Site&lt;/h2&gt;
+&lt;/header&gt;</code></pre>
+<ul class="lines">
+<li><code>&lt;header&gt;</code><span>O cabeçalho da página: a parte de apresentação, no topo.</span></li>
+<li><code>&lt;h1&gt;</code><span>O título principal. Use só um por página.</span></li>
+<li><code>&lt;div class="center"&gt;</code><span>Outra caixa. O apelido <code>center</code> servirá para centralizar a imagem.</span></li>
+<li><code>&lt;img&gt;</code><span>Mostra uma imagem. Não tem tag de fechamento.</span></li>
+<li><code>src="./img/logo.png"</code><span>O caminho da imagem: dentro da pasta <code>img</code>, o arquivo <code>logo.png</code>.</span></li>
+<li><code>alt="Meu logo"</code><span>Descrição da imagem, lida por quem não enxerga a tela.</span></li>
+<li><code>&lt;h2&gt;</code><span>Subtítulo, menor que o <code>h1</code>.</span></li>
+</ul>
+</div></div>
+
+<div class="step" id="p5"><div class="num">5</div><div class="body">
+<h3>Escreva o conteúdo principal</h3>
+<div class="map"><div class="mm" aria-hidden="true"><span class="n">Menu</span><span class="t">Título</span><span class="l"></span><span class="h">Subtítulo</span><span class="m on">Conteúdo</span><span class="f">Rodapé</span></div><p><strong>Você está aqui:</strong> no <strong>conteúdo principal</strong>: as seções de texto no meio da página.</p></div>
+<p>Depois do <code>&lt;/header&gt;</code>, escreva as seções de texto. O HTML tem títulos de <code>h1</code> (o maior) até <code>h6</code> (o menor). Este site usa até o <code>h5</code>:</p>
+<span class="file">index.html</span>
+<pre><code>&lt;main&gt;
+    &lt;section&gt;
+        &lt;h3&gt;Sobre mim&lt;/h3&gt;
+        &lt;p&gt;Escreva aqui quem você é.&lt;/p&gt;
+
+        &lt;h4&gt;Meu projeto&lt;/h4&gt;
+        &lt;p&gt;Escreva aqui sobre o seu projeto.&lt;/p&gt;
+
+        &lt;h5&gt;Meu objetivo&lt;/h5&gt;
+        &lt;p&gt;Escreva aqui o objetivo do site.&lt;/p&gt;
+    &lt;/section&gt;
+&lt;/main&gt;</code></pre>
+<ul class="lines">
+<li><code>&lt;main&gt;</code><span>O conteúdo principal da página. Só existe um por página.</span></li>
+<li><code>&lt;section&gt;</code><span>Uma seção: um grupo de assuntos que andam juntos.</span></li>
+<li><code>&lt;h3&gt; &lt;h4&gt; &lt;h5&gt;</code><span>Subtítulos, cada um menor que o anterior. Organizam o texto em partes.</span></li>
+<li><code>&lt;p&gt;</code><span>Parágrafo de texto (de <em>paragraph</em>).</span></li>
+</ul>
+<p>Salve e aperte <strong>F5</strong> no navegador para ver a mudança. Faça isso depois de cada passo.</p>
+</div></div>
+
+<div class="step" id="p6"><div class="num">6</div><div class="body">
+<h3>Crie o rodapé e feche a caixa</h3>
+<div class="map"><div class="mm" aria-hidden="true"><span class="n">Menu</span><span class="t">Título</span><span class="l"></span><span class="h">Subtítulo</span><span class="m">Conteúdo</span><span class="f on">Rodapé</span></div><p><strong>Você está aqui:</strong> no <strong>rodapé</strong>, a parte final da página, com os contatos.</p></div>
+<p>Depois do <code>&lt;/main&gt;</code>, ainda dentro da <code>div</code>, escreva:</p>
+<span class="file">index.html</span>
+<pre><code>&lt;footer class="rodape"&gt;
+    &lt;div class="container"&gt;
+        &lt;div class="coluna"&gt;
+            &lt;p&gt;Email: seuemail@exemplo.com&lt;/p&gt;
+            &lt;p&gt;Telefone: (00) 00000-0000&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;div class="direitos"&gt;
+        &lt;p&gt;© 2026 Seu Nome - Todos os direitos reservados&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/footer&gt;</code></pre>
+<p><code>&lt;footer&gt;</code> é o “rodapé”: a parte final da página, com contatos e direitos autorais. Dentro dele, as caixas <code>container</code>, <code>coluna</code> e <code>direitos</code> separam os contatos dos direitos autorais. Troque os dados de exemplo pelos seus.</p>
+<div class="callout"><strong>Pronto o HTML!</strong> Confira se o <code>&lt;/div&gt;</code> da caixa <code>box</code> vem logo depois do <code>&lt;/footer&gt;</code>. A página já tem todo o conteúdo, mas está “crua”: fundo branco e letras pretas. O CSS dá a aparência nos próximos passos.</div>
+</div></div>
+
+<div class="step" id="p7"><div class="num">7</div><div class="body">
+<h3>Crie o CSS: fundo e letras</h3>
+<div class="map"><div class="mm bg" aria-hidden="true"><span class="n">Menu</span><span class="t">Título</span><span class="l"></span><span class="h">Subtítulo</span><span class="m">Conteúdo</span><span class="f">Rodapé</span></div><p><strong>Você está aqui:</strong> no <strong>fundo da página inteira</strong> e na cor das letras.</p></div>
+<p>Abra o arquivo <code>index.css</code> e escreva:</p>
+<span class="file">index.css</span>
+<pre><code>:root {
+    --cor-destaque: #ff9d2e;
+}
+
+body {
+    background-color: black;
+    background-image: url('./img/fundo.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    font-family: Arial, sans-serif;
+}</code></pre>
+<ul class="lines">
+<li><code>:root</code><span>Guarda valores com nome. Aqui, a <code>--cor-destaque</code>: mude a cor neste único lugar e ela muda em todo o site.</span></li>
+<li><code>body</code><span>O <strong>seletor</strong>: diz <em>quem</em> vai receber o estilo (aqui, a página toda).</span></li>
+<li><code>{ ... }</code><span>As chaves guardam as regras. Cada regra é <strong>propriedade: valor;</strong>.</span></li>
+<li><code>background-color: black</code><span>Cor de fundo preta. Aparece se a imagem não carregar.</span></li>
+<li><code>background-image: url(...)</code><span>Coloca a foto da pasta <code>img</code> como fundo.</span></li>
+<li><code>background-repeat: no-repeat</code><span>Não repete a foto como azulejos.</span></li>
+<li><code>background-size: cover</code><span>Estica a foto para cobrir a tela toda.</span></li>
+<li><code>color: white</code><span>Deixa as letras brancas, para aparecerem no fundo escuro.</span></li>
+<li><code>font-family</code><span>O tipo de letra.</span></li>
+</ul>
+<div class="callout">O site do exemplo usa uma foto azul escura de fundo. Escolha uma foto <strong>escura</strong>, para as letras brancas continuarem legíveis.</div>
+</div></div>
+
+<div class="step" id="p8"><div class="num">8</div><div class="body">
+<h3>Estilize o menu e a caixa</h3>
+<div class="map"><div class="mm" aria-hidden="true"><span class="n on">Menu</span><span class="t">Título</span><span class="l"></span><span class="h">Subtítulo</span><span class="m">Conteúdo</span><span class="f">Rodapé</span></div><p><strong>Você está aqui:</strong> de volta ao <strong>menu</strong>, agora com aparência, e no espaço das laterais da página.</p></div>
+<p>Adicione no <code>index.css</code>:</p>
+<span class="file">index.css</span>
+<pre><code>ul {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    align-items: center;
+    padding: 16px;
+    font-size: large;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: var(--cor-destaque);
+}
+
+.box {
+    padding: 0px 50px;
+}</code></pre>
+<ul class="lines">
+<li><code>display: flex</code><span>Liga o <strong>Flexbox</strong>: os itens da lista ficam lado a lado, em vez de um embaixo do outro.</span></li>
+<li><code>justify-content: space-between</code><span>Espalha os itens: o primeiro vai para a esquerda e o último para a direita. Com um só item, ele fica à esquerda.</span></li>
+<li><code>list-style: none</code><span>Tira as bolinhas da lista.</span></li>
+<li><code>align-items: center</code><span>Alinha os itens ao centro, na vertical.</span></li>
+<li><code>padding: 16px</code><span>Espaço interno de 16 px.</span></li>
+<li><code>font-size: large</code><span>Letras maiores.</span></li>
+<li><code>a { ... }</code><span>Links brancos e sem sublinhado.</span></li>
+<li><code>nav a:hover</code><span>Só os links do menu, quando o mouse passa por cima: ganham a cor de destaque.</span></li>
+<li><code>.box</code><span>O ponto <code>.</code> significa “o que tem <code>class="box"</code>”. Dá 50 px de espaço nas laterais da página.</span></li>
+</ul>
+</div></div>
+
+<div class="step" id="p9"><div class="num">9</div><div class="body">
+<h3>Estilize título, logo e rodapé</h3>
+<div class="map"><div class="mm" aria-hidden="true"><span class="n">Menu</span><span class="t on">Título</span><span class="l on"></span><span class="h on">Subtítulo</span><span class="m">Conteúdo</span><span class="f on">Rodapé</span></div><p><strong>Você está aqui:</strong> no <strong>título</strong>, no <strong>logo</strong>, no <strong>subtítulo</strong> e no <strong>rodapé</strong>.</p></div>
+<p>Adicione no final do <code>index.css</code>:</p>
+<span class="file">index.css</span>
+<pre><code>h1 {
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+
+.center {
+    text-align: center;
+}
+
+img {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 5px solid var(--cor-destaque);
+}
+
+h2 {
+    color: var(--cor-destaque);
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+    margin: 40px;
+}
+
+footer p {
+    margin: 20px;
+}</code></pre>
+<ul class="lines">
+<li><code>h1 { display: flex; justify-content: center }</code><span>Centraliza o título, usando o Flexbox.</span></li>
+<li><code>.center { text-align: center }</code><span>Centraliza o que está na caixa <code>center</code>: o logo.</span></li>
+<li><code>width / height: 250px</code><span>O logo fica com 250 px de largura e de altura. Use uma imagem quadrada, para não deformar.</span></li>
+<li><code>border-radius: 50%</code><span>Arredonda as bordas. Em uma imagem quadrada, vira um círculo.</span></li>
+<li><code>border: 5px solid var(--cor-destaque)</code><span>Uma borda de 5 px, na cor de destaque, ao redor do logo.</span></li>
+<li><code>h2 { color: var(--cor-destaque) }</code><span>Pinta o subtítulo com a cor de destaque.</span></li>
+<li><code>footer { display: flex ... }</code><span>Centraliza o conteúdo do rodapé e cria espaços ao redor (<code>padding</code> por dentro, <code>margin</code> por fora).</span></li>
+<li><code>footer p</code><span>Só os parágrafos que estão dentro do rodapé: ganham 20 px de espaço ao redor.</span></li>
+</ul>
+<div class="callout"><strong>Extra para o celular (opcional):</strong> o CSS acima usa tamanhos fixos, então em telas bem pequenas o logo e o rodapé podem ficar apertados. Para melhorar, adicione no final do arquivo:
+<pre style="margin-top:.6rem;border-radius:10px"><code>@media (max-width: 600px) {
+    .box { padding: 0 20px; }
+    img { width: 180px; height: 180px; }
+    footer { margin: 20px 0; padding: 20px; }
+}</code></pre>
+<code>@media (max-width: 600px)</code> quer dizer: “só aplique o que está dentro se a tela tiver até 600 px de largura”, ou seja, no celular. Teste apertando <strong>F12</strong> e usando o ícone de celular.</div>
+</div></div>
+
+<div class="step" id="p10"><div class="num">10</div><div class="body">
+<h3>Coloque o site no ar</h3>
+<div class="map"><div class="mm bg" aria-hidden="true"><span class="n on">Menu</span><span class="t on">Título</span><span class="l on"></span><span class="h on">Subtítulo</span><span class="m on">Conteúdo</span><span class="f on">Rodapé</span></div><p><strong>Você está aqui:</strong> no <strong>site completo</strong>, pronto para o mundo ver.</p></div>
+<ol>
+<li>Entre em <strong>github.com</strong> e crie um repositório novo (<em>New repository</em>) chamado <code>meu-site</code>, marcado como <strong>Public</strong>.</li>
+<li>Clique em <strong>uploading an existing file</strong> e arraste os arquivos da pasta: <code>index.html</code>, <code>index.css</code> e a <strong>pasta <code>img</code></strong> inteira, com o logo e o fundo. Depois clique em <strong>Commit changes</strong>.</li>
+<li>Vá em <strong>Settings → Pages</strong>. Em <em>Branch</em>, escolha <code>main</code> e a pasta <code>/ (root)</code>. Clique em <strong>Save</strong>.</li>
+<li>Espere alguns minutos. Seu site fica em <code>https://SEU-USUARIO.github.io/meu-site/</code>.</li>
+</ol>
+<div class="callout"><strong>Parabéns!</strong> Seu site está publicado. Se as imagens não aparecerem, confira se os nomes dos arquivos na pasta <code>img</code> são exatamente os mesmos do código (o GitHub diferencia maiúsculas de minúsculas).</div>
+</div></div>
+</section>
+
+<section class="sec" id="personalizar">
+<h2>Deixe com a sua cara</h2>
+<p>O código dos 10 passos é um <strong>modelo base</strong>: tem o mesmo formato do nosso exemplo (menu, logo redondo, textos e rodapé), mas é todo seu para mudar.</p>
+<div class="grid">
+<div class="card"><h3>✏️ Textos</h3><p>Troque os títulos, os parágrafos e os dados do rodapé pelos seus.</p></div>
+<div class="card"><h3>🎨 Cores</h3><p>Mude a <code>--cor-destaque</code> no início do CSS, e o site inteiro acompanha.</p></div>
+<div class="card"><h3>🖼️ Imagens</h3><p>Substitua <code>logo.png</code> e <code>fundo.jpg</code> na pasta <code>img</code>, mantendo os nomes.</p></div>
+<div class="card"><h3>🔗 Menu</h3><p>Adicione novos itens <code>&lt;li&gt;</code> com links para outras páginas que criar.</p></div>
+</div>
+</section>
+
+<section class="cta" id="exemplo">
+<a href="https://moraes2510.github.io/projetointegrador.ifs/" target="_blank" rel="noopener">Nosso exemplo</a>
+</section>
+</main>
+</body>
+</html>
