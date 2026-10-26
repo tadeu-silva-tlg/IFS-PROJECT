@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seu primeiro site, passo a passo</title>
+<style>
+:root{--bg:#fbf7f0;--fg:#2b2118;--muted:#6b5b4b;--ac:#a8501c;--ac2:#c46a1a;--acfg:#fff;--card:#fff;--line:#e4d8c8;--soft:#f5e8d6;--code:#2b2118;--codefg:#f6e9d6;--hl:#f0b070;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17120d;--fg:#f3e9dc;--muted:#b9a78f;--ac:#e58a4d;--ac2:#f0b070;--acfg:#17120d;--card:#221b14;--line:#3a2f23;--soft:#2a2118;--code:#0e0b08;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#17120d;--fg:#f3e9dc;--muted:#b9a78f;--ac:#e58a4d;--ac2:#f0b070;--acfg:#17120d;--card:#221b14;--line:#3a2f23;--soft:#2a2118;--code:#0e0b08;color-scheme:dark}
+html{scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:1rem/1.7 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.2;margin:0}
+a{color:var(--ac)}
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);border-bottom:1px solid var(--line);display:flex;gap:.4rem;overflow-x:auto;padding:.55rem 1rem;font-size:.82rem}
+nav.top a{flex:none;text-decoration:none;color:var(--muted);padding:.2rem .7rem;border-radius:99px;border:1px solid var(--line)}
+nav.top a:hover,nav.top a:focus{background:var(--ac);color:var(--acfg);border-color:var(--ac)}
+.wrap{max-width:820px;margin:0;padding:0 1.2rem 0 clamp(1.2rem,5vw,4rem)}
+.hero{background:linear-gradient(135deg,var(--ac),var(--ac2));color:var(--acfg);padding:3.2rem 0 3rem}
+.hero small{letter-spacing:.1em;text-transform:uppercase;font-weight:700;font-size:.78rem;opacity:.9}
+.hero h1{font-size:clamp(2rem,7vw,3.4rem);margin:.5rem 0 1rem}
+.hero p{max-width:34rem;font-size:1.08rem;margin:0 0 1.4rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+.chips span{background:rgba(255,255,255,.2);border-radius:99px;padding:.25rem .8rem;font-size:.85rem}
+.btn{display:inline-block;background:var(--acfg);color:var(--ac);font-weight:700;text-decoration:none;padding:.7rem 1.3rem;border-radius:10px}
+.sec{padding:2.6rem 0 0}
+.sec>h2{font-size:clamp(1.5rem,4.5vw,2rem);margin-bottom:.6rem}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:1rem 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem}
+.card h3{font-size:1.15rem;margin-bottom:.3rem}
+.callout{background:var(--soft);border-left:4px solid var(--ac);border-radius:8px;padding:.75rem 1rem;margin:1rem 0;font-size:.95rem}
+.step{display:grid;grid-template-columns:auto 1fr;gap:1rem;margin-top:2.2rem;position:relative}
+.num{width:2.6rem;height:2.6rem;border-radius:50%;background:var(--ac);color:var(--acfg);display:grid;place-items:center;font-weight:800;font-family:Georgia,serif;font-size:1.2rem}
+.step::before{content:"";position:absolute;left:1.3rem;top:2.8rem;bottom:-2rem;width:2px;background:var(--line)}
+.step:last-of-type::before{display:none}
+.body{min-width:0}
+.body h3{font-size:1.35rem;margin:.2rem 0 .4rem}
+.file{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:6px 6px 0 0;padding:.1rem .7rem;font-size:.78rem;font-family:ui-monospace,Consolas,monospace;margin-top:.6rem;color:var(--muted)}
+pre{background:var(--code);color:var(--codefg);padding:1rem;border-radius:0 10px 10px 10px;overflow-x:auto;font-size:.88rem;line-height:1.55;margin:0 0 .8rem}
+code{font-family:ui-monospace,Consolas,monospace}
+.lines{list-style:none;padding:0;margin:.4rem 0}
+.lines li{display:grid;grid-template-columns:minmax(0,13rem) 1fr;gap:.2rem .8rem;padding:.45rem 0;border-top:1px dashed var(--line);font-size:.93rem}
+.lines code,p code{background:var(--soft);border-radius:4px;padding:0 .35em;font-size:.86em;overflow-wrap:anywhere}
+.tagdemo{font-family:ui-monospace,Consolas,monospace;font-size:clamp(.95rem,4vw,1.3rem);text-align:center;padding:1.2rem .6rem;background:var(--code);color:var(--codefg);border-radius:12px;margin:1rem 0 .4rem;overflow-x:auto;white-space:nowrap}
+.tagdemo b{color:var(--hl)}
+.tagcap{display:flex;justify-content:space-around;text-align:center;font-size:.8rem;color:var(--muted);gap:.4rem}
+.browser{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card);margin:.8rem 0;max-width:420px}
+.browser i{display:block;background:var(--soft);padding:.4rem .7rem;font-style:normal;font-size:.75rem;color:var(--muted);border-bottom:1px solid var(--line)}
+.browser div{padding:1.2rem;text-align:center;font-family:Georgia,serif}
+.browser .nv{font:.85rem system-ui;display:flex;justify-content:center;gap:1rem;margin-bottom:1rem;color:var(--ac)}
+.browser .ft{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--ac2));margin:0 auto .6rem}
+.devs{display:flex;gap:1rem;align-items:flex-end;flex-wrap:wrap}
+.devs .browser{margin:0}
+.ph{max-width:150px}
+dl{display:grid;grid-template-columns:minmax(0,9rem) 1fr;gap:.5rem 1rem;margin:1rem 0}
+.cta{text-align:left;padding:3rem 0 1rem}.cta a{display:inline-block;background:var(--ac);color:var(--acfg);font-weight:700;font-size:1.15rem;text-decoration:none;padding:.95rem 2.2rem;border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,.15)}.cta a:hover,.cta a:focus{background:var(--ac2)}
+@media (max-width:560px){.lines li{grid-template-columns:1fr}dl{grid-template-columns:1fr;gap:0}dd{margin-bottom:.7rem}.step{gap:.7rem}}
+footer{margin-top:3rem;padding:1.5rem 0 3rem;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+<small>HTML + CSS na prática</small>
+<h1>Seu primeiro site, do zero, passo a passo</h1>
+<p>Você vai criar um portfólio com menu, foto, textos e links, e colocá-lo no ar de graça. Cada pedaço de código é pequeno e vem explicado linha por linha. Não precisa saber nada antes.</p>
+<div class="chips"><span>10 passos</span><span>Sem instalar nada difícil</span><span>Funciona no celular</span></div>
+<a class="btn" href="#antes">Começar</a>
+</div></header>
+
+<main class="wrap">
+
+<section class="sec" id="antes">
+<h2>Antes de tudo: o que são HTML e CSS?</h2>
+<p>Um site tem duas partes. Pense em uma casa:</p>
+<div class="grid">
+<div class="card"><h3>🧱 HTML</h3><p>É a estrutura: o que existe na página (títulos, textos, fotos, links). Como as paredes e os cômodos.</p></div>
+<div class="card"><h3>🎨 CSS</h3><p>É a aparência: cores, tamanhos, posição. Como a pintura e a decoração.</p></div>
+</div>
+<p>O HTML é feito de <strong>tags</strong>. Quase toda tag abre e fecha, e o conteúdo fica no meio:</p>
+<div class="tagdemo" aria-label="Exemplo de tag">&lt;p&gt;<b>Olá, mundo!</b>&lt;/p&gt;</div>
+<div class="tagcap"><span>abre a tag</span><span>conteúdo</span><span>fecha a tag (tem uma barra /)</span></div>
+<div class="callout"><strong>O que você precisa:</strong> um computador, o <em>Bloco de Notas</em> (ou o Visual Studio Code, que é melhor), um navegador e uma conta gratuita no GitHub.</div>
+</section>
+
+<section class="sec"><h2>Mãos à obra</h2>
+
+<div class="step" id="p1"><div class="num">1</div><div class="body">
+<h3>Crie a pasta do site</h3>
+<p>Crie uma pasta chamada <code>meu-site</code>. Dentro dela ficarão todos os arquivos. Por enquanto, coloque nela uma foto sua com o nome <code>foto.png</code>.</p>
+<span class="file">meu-site/</span>
+<pre><code>meu-site/
+├── foto.png
+├── index.html     (vamos criar)
+└── style.css      (vamos criar)</code></pre>
+<p>Crie um arquivo de texto e salve como <code>index.html</code>. O nome <code>index</code> é especial: é a página inicial do site.</p>
+</div></div>
+
+<div class="step" id="p2"><div class="num">2</div><div class="body">
+<h3>Escreva o esqueleto da página</h3>
+<p>Toda página HTML começa assim. Copie e salve:</p>
+<span class="file">index.html</span>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="pt-BR"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;Meu Portfólio&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+<ul class="lines">
+<li><code>&lt;!DOCTYPE html&gt;</code><span>Avisa o navegador: “isto é uma página HTML moderna”.</span></li>
+<li><code>&lt;html lang="pt-BR"&gt;</code><span>Envolve a página toda e diz que o idioma é português do Brasil.</span></li>
+<li><code>&lt;head&gt;</code><span>A “cabeça”: informações que não aparecem na tela.</span></li>
+<li><code>charset="utf-8"</code><span>Faz acentos e ç aparecerem certinho.</span></li>
+<li><code>name="viewport"</code><span>Faz o site se ajustar à tela do celular. Não esqueça!</span></li>
+<li><code>&lt;title&gt;</code><span>O nome que aparece na aba do navegador.</span></li>
+<li><code>&lt;body&gt;</code><span>O “corpo”: tudo o que você escrever aqui aparece na tela.</span></li>
+</ul>
+<div class="callout"><strong>Teste:</strong> dê dois cliques no arquivo. Ele abre no navegador. A página está em branco, e isso é o esperado.</div>
+</div></div>
+
+<div class="step" id="p3"><div class="num">3</div><div class="body">
+<h3>Coloque título e texto</h3>
+<p>Escreva isto <strong>entre</strong> <code>&lt;body&gt;</code> e <code>&lt;/body&gt;</code>:</p>
+<span class="file">index.html</span>
+<pre><code>&lt;h1&gt;Seu Nome&lt;/h1&gt;
+&lt;h2&gt;Desenvolvedor(a) de Software&lt;/h2&gt;
+&lt;p&gt;Olá! Estou aprendendo a criar sites.&lt;/p&gt;</code></pre>
+<ul class="lines">
+<li><code>&lt;h1&gt;</code><span>Título principal. Use só um por página.</span></li>
+<li><code>&lt;h2&gt;</code><span>Subtítulo, um pouco menor. Existem também h3, h4…</span></li>
+<li><code>&lt;p&gt;</code><span>Parágrafo de texto (de <em>paragraph</em>).</span></li>
+</ul>
+<p>Salve e aperte <strong>F5</strong> no navegador para ver a mudança. Faça isso depois de cada passo.</p>
+</div></div>
+
+<div class="step" id="p4"><div class="num">4</div><div class="body">
+<h3>Adicione sua foto e um link</h3>
+<p>Coloque a foto <strong>acima</strong> do <code>&lt;h1&gt;</code> e o link <strong>abaixo</strong> do parágrafo:</p>
+<span class="file">index.html</span>
+<pre><code>&lt;img src="foto.png" alt="Minha foto"&gt;
+
+&lt;a href="https://github.com/SEU-USUARIO"&gt;Meu Github&lt;/a&gt;</code></pre>
+<ul class="lines">
+<li><code>&lt;img&gt;</code><span>Mostra uma imagem. Não tem tag de fechamento.</span></li>
+<li><code>src="foto.png"</code><span>Qual arquivo mostrar (o nome da sua foto).</span></li>
+<li><code>alt="..."</code><span>Descrição da imagem, lida por quem não enxerga a tela.</span></li>
+<li><code>&lt;a href="..."&gt;</code><span>Cria um link. O <code>href</code> é o endereço de destino, e o texto no meio é o que a pessoa clica.</span></li>
+</ul>
+</div></div>
+
+<div class="step" id="p5"><div class="num">5</div><div class="body">
+<h3>Crie o menu</h3>
+<p>Logo depois de <code>&lt;body&gt;</code>, antes da foto, escreva:</p>
+<span class="file">index.html</span>
+<pre><code>&lt;nav&gt;
+  &lt;a href="index.html"&gt;Sobre mim&lt;/a&gt;
+  &lt;a href="project.html"&gt;Projetos&lt;/a&gt;
+  &lt;a href="contact.html"&gt;Contato&lt;/a&gt;
+&lt;/nav&gt;</code></pre>
+<p><code>&lt;nav&gt;</code> (de <em>navigation</em>) é a “caixa” do menu. Dentro dela ficam os links para as 3 páginas.</p>
+<div class="callout"><strong>Crie as outras páginas:</strong> copie o <code>index.html</code> duas vezes e renomeie as cópias para <code>project.html</code> e <code>contact.html</code>. Em cada uma, troque o título e o texto. O menu continua igual.</div>
+</div></div>
+
+<div class="step" id="p6"><div class="num">6</div><div class="body">
+<h3>Ligue o CSS e escolha as cores</h3>
+<p>Primeiro, avise o HTML que existe um arquivo de estilo. Dentro do <code>&lt;head&gt;</code>, depois do <code>&lt;title&gt;</code>:</p>
+<span class="file">index.html</span>
+<pre><code>&lt;link rel="stylesheet" href="style.css"&gt;</code></pre>
+<p>Agora crie o arquivo <code>style.css</code> na mesma pasta e escreva:</p>
+<span class="file">style.css</span>
+<pre><code>body {
+  background: #fbf7f0;
+  color: #2b2118;
+  font-family: Georgia, serif;
+}</code></pre>
+<ul class="lines">
+<li><code>body</code><span>O <strong>seletor</strong>: diz <em>quem</em> vai receber o estilo (aqui, a página toda).</span></li>
+<li><code>{ ... }</code><span>As chaves guardam as regras.</span></li>
+<li><code>background: #fbf7f0;</code><span>Uma regra: <strong>propriedade</strong> (cor de fundo), dois-pontos, <strong>valor</strong> e ponto e vírgula.</span></li>
+<li><code>color</code><span>A cor do texto.</span></li>
+<li><code>font-family</code><span>O tipo de letra.</span></li>
+</ul>
+<div class="callout">Os códigos como <code>#fbf7f0</code> são cores. Para escolher as suas, procure “seletor de cores” no Google.</div>
+</div></div>
+
+<div class="step" id="p7"><div class="num">7</div><div class="body">
+<h3>Centralize e deixe a foto redonda</h3>
+<p>Adicione no <code>style.css</code>:</p>
+<span class="file">style.css</span>
+<pre><code>body {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+}</code></pre>
+<p class="callout">Você pode escrever o <code>body</code> duas vezes, mas o ideal é juntar tudo na mesma chave. Cole as novas linhas dentro do <code>body</code> que você já tem.</p>
+<ul class="lines">
+<li><code>max-width: 700px</code><span>O conteúdo nunca passa de 700 px de largura, para não ficar esticado em telas grandes.</span></li>
+<li><code>margin: 0 auto</code><span>Empurra o conteúdo para o centro da tela.</span></li>
+<li><code>padding: 20px</code><span>Espaço interno, para o texto não colar na borda.</span></li>
+<li><code>text-align: center</code><span>Centraliza os textos.</span></li>
+<li><code>border-radius: 50%</code><span>Arredonda as bordas. Com 50% e uma imagem quadrada, vira um círculo.</span></li>
+<li><code>object-fit: cover</code><span>Corta a foto para preencher o círculo sem deformar.</span></li>
+</ul>
+</div></div>
+
+<div class="step" id="p8"><div class="num">8</div><div class="body">
+<h3>Coloque o menu em linha</h3>
+<span class="file">style.css</span>
+<pre><code>nav {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+a {
+  color: #a8501c;
+}</code></pre>
+<ul class="lines">
+<li><code>display: flex</code><span>Liga o <strong>Flexbox</strong>: os itens da caixa ficam lado a lado, em vez de um embaixo do outro.</span></li>
+<li><code>justify-content: center</code><span>Centraliza os itens na linha.</span></li>
+<li><code>gap: 20px</code><span>Espaço entre os itens.</span></li>
+<li><code>a { color }</code><span>Muda a cor de todos os links.</span></li>
+</ul>
+<p>O resultado deve ficar parecido com isto:</p>
+<div class="browser" aria-label="Exemplo do resultado"><i>meu-site / index.html</i><div><div class="nv" style="padding:0"><span>Sobre mim</span><span>Projetos</span><span>Contato</span></div><div class="ft"></div><h3>Seu Nome</h3><small>Desenvolvedor(a) de Software</small></div></div>
+</div></div>
+
+<div class="step" id="p9"><div class="num">9</div><div class="body">
+<h3>Faça o site funcionar no celular</h3>
+<p>“Responsivo” quer dizer que o site se adapta a qualquer tela. Você já fez a maior parte: a linha <code>viewport</code> do passo 2 e o <code>max-width</code> do passo 7. Para ajustar telas maiores, adicione no <strong>final</strong> do <code>style.css</code>:</p>
+<span class="file">style.css</span>
+<pre><code>@media (min-width: 768px) {
+  img {
+    width: 220px;
+    height: 220px;
+  }
+}</code></pre>
+<ul class="lines">
+<li><code>@media</code><span>“Só aplique o que está dentro se…”</span></li>
+<li><code>(min-width: 768px)</code><span>…a tela tiver pelo menos 768 px de largura (tablet ou computador).</span></li>
+</ul>
+<p>Ou seja: no celular a foto tem 150 px, e em telas maiores ela cresce para 220 px. Para testar no computador, aperte <strong>F12</strong> e use o ícone de celular, ou diminua a largura da janela.</p>
+<div class="devs">
+<div class="browser ph"><i>Celular</i><div><div class="ft" style="width:50px;height:50px"></div><small>foto menor</small></div></div>
+<div class="browser" style="max-width:240px"><i>Computador</i><div><div class="ft"></div><small>foto maior</small></div></div>
+</div>
+</div></div>
+
+<div class="step" id="p10"><div class="num">10</div><div class="body">
+<h3>Coloque o site no ar</h3>
+<ol>
+<li>Entre em <strong>github.com</strong> e crie um repositório novo (<em>New repository</em>) chamado <code>meu-site</code>, marcado como <strong>Public</strong>.</li>
+<li>Clique em <strong>uploading an existing file</strong> e arraste todos os arquivos da pasta (<code>index.html</code>, <code>project.html</code>, <code>contact.html</code>, <code>style.css</code> e a foto). Depois clique em <strong>Commit changes</strong>.</li>
+<li>Vá em <strong>Settings → Pages</strong>. Em <em>Branch</em>, escolha <code>main</code> e a pasta <code>/ (root)</code>. Clique em <strong>Save</strong>.</li>
+<li>Espere alguns minutos. Seu site fica em <code>https://SEU-USUARIO.github.io/meu-site/</code>.</li>
+</ol>
+<div class="callout"><strong>Parabéns!</strong> Seu site está publicado. Para mudar algo, edite o arquivo e envie de novo para o GitHub.</div>
+</div></div>
+</section>
+
+<section class="cta" id="exemplo">
+<a href="https://moraes2510.github.io/projetointegrador.ifs/" target="_blank" rel="noopener">Nosso exemplo</a>
+</section>
+</main>
+<footer></footer>
+</body>
+</html>
